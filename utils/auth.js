@@ -7,18 +7,27 @@ const JWT_HEADER = {
   "typ": "JWT"
 };
 
-exporsts.encode = username => {
-  var payload = {
+const encode = username => new Promise((resolve, reject) => {
+  const payload = {
     "exp": JWT_EXPIRATION,
     "usr": username
   };
-  return jwt.sign(payload, JWT_SECRET, { header: JWT_HEADER, expiresIn: '2h' });
-};
 
-exports.set = (res, username) => {
-  var token = encode(username);
-  res.cookie('jwt', token);
-}
+  jwt.sign(payload, JWT_SECRET, { header: JWT_HEADER, expiresIn: '2h' }, (token, err) => {
+    if (err)
+      return reject(err);
+    resolve(token);
+  });
+});
+
+exports.set = (res, username) => new Promise((resolve, reject) => {
+  encode(username).then(token => {
+    res.cookie('jwt', token);
+    resolve();
+  }).catch(err => {
+    reject(err);
+  });
+});
 
 exports.wipe = res => {
   res.clearCookie('jwt');

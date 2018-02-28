@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var db = require('./utils/db');
-db.connect('mongodb://localhost:27017', 'BlogServer', function(err) {
+db.connect('mongodb://localhost:27017', 'BlogServer', err => {
   if (err) throw err;
   console.log("Connected to MongoDB");
 });
@@ -14,6 +14,7 @@ db.connect('mongodb://localhost:27017', 'BlogServer', function(err) {
 var index = require('./routes/index');
 var users = require('./routes/users');
 var blog = require('./routes/blog');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/blog', blog);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
