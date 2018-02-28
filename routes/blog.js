@@ -12,16 +12,10 @@ router.get('/:username/:postid', (req, res) => {
   const postid = req.params.postid;
 
   var Posts = db.get().collection('Posts');
-  Posts.findOne({ "postid": parseInt(postid) }).then(post => {
-
-		res.render('post', {
-			title : post.title,
-			username: post.username,
-			body: post.body
-		});
-
+  Posts.findOne({ 'postid': parseInt(postid) }).then(post => {
+		res.render('post', { post: post });
 	}).catch((err) => {
-		console.log(err.message);
+		console.log("Error: " + err.message);
 	});
 });
 
@@ -30,11 +24,11 @@ router.get('/:username', (req, res) => {
 	const username = req.params.username;
 
 	var Posts = db.get().collection('Posts');
-	Posts.find({ "username": username }).toArray().then(postsList => {
-		console.log(postsList);
-		res.send("Posts List");
+	Posts.find({ 'username': username }).toArray().then(postsList => {
+		// TODO: only render 5 posts at a time
+		res.render('postsList', { postsList: postsList });
 	}).catch((err) => {
-		console.log("Error!");
+		console.log("Error: " + err.message);
 	});
 });
 
