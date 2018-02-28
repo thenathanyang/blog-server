@@ -14,5 +14,9 @@
 			<p><%= postsList[i].body %></p>
 		</div>
 	<% } %>
+
+	<% if (isMoreToRender) { %>
+		<a id="next" href=<%= nextURL %>>Next</a>
+	<% } %>
 </body>
 </html>
