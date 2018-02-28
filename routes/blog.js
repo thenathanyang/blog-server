@@ -23,20 +23,21 @@ router.get('/:username/:postid', (req, res) => {
 router.get('/:username', (req, res) => {
 	var Posts = db.get().collection('Posts');
 	const username = req.params.username;
+	let postsList = [];
 
 	// req.query.start is the start postid query string
 	const postidToRender = req.query.start ? parseInt(req.query.start) : 1;
 
-	let maxPostid = 0;
-	Posts.find().sort({ 'postid': -1 }).limit(1).toArray().then(posts => {
-		maxPostid = parseInt(posts[0].postid);
-		return Posts.find({ 'username': username, 'postid': {$gte:postidToRender} }).sort({ 'postid': 1 }).limit(5).toArray();
-	}).then(postsList => {
-		const isMoreToRender = (parseInt(postsList[postsList.length - 1].postid) < maxPostid) ? true : false;
+	Posts.find({ 'username': username, 'postid': {$gte:postidToRender} })
+				.sort({ 'postid': 1 }).limit(5).toArray().then(posts => {
+		postsList = posts;
+		return Posts.find({ 'username': username, 'postid': {$gt:postsList[postsList.length - 1].postid} })
+								.sort({ 'postid': 1 }).limit(1).toArray();
+	}).then(nextLargestPost => {
+		const isMoreToRender = (nextLargestPost[0]) ? true : false;
 		let nextURL = "";
 		if (isMoreToRender) {
-			// TODO: check if this okay
-			const nextStart = postsList[postsList.length - 1].postid + 1;
+			const nextStart = nextLargestPost[0].postid;
 			nextURL = "/blog/" + username + "?start=" + nextStart.toString();
 		}
 
