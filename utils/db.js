@@ -4,7 +4,7 @@ var state = {
   db: null,
 }
 
-exports.connect = function(url, dbName, done) {
+exports.connect = (url, dbName, done) => {
   if (state.db) return done()
 
   MongoClient.connect(url, function(err, db) {
@@ -14,11 +14,11 @@ exports.connect = function(url, dbName, done) {
   })
 }
 
-exports.get = function() {
+exports.get = () => {
   return state.db
 }
 
-exports.close = function(done) {
+exports.close = done => {
   if (state.db) {
     state.db.close(function(err, result) {
       state.db = null

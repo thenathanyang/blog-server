@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var db = require('./db');
+var db = require('./utils/db');
 db.connect('mongodb://localhost:27017', 'BlogServer', function(err) {
   if (err) throw err;
   console.log("Connected to MongoDB");
