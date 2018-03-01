@@ -17,14 +17,15 @@ router.get('/', (req, res) => {
 
 		return bcrypt.compare(inputPwd, user.password);
 	}).then(result => {
-		if (result === null)
+		if (result === false)
 			throw new Error("username/password does not match");
 
 		return auth.set(res, username);
 	}).then(() => {
+		console.log("Successful login by: " + username);
 		res.redirect(redirect);
 	}).catch(err => {
-		res.render('login');
+		res.render('login', { redirect: redirect });
 		console.log("Error: " + err.message);
 	});
 });
