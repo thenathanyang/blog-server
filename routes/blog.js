@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var commonmark = require('commonmark');
 var db = require('../utils/db');
 
 /* GET Post */
@@ -7,10 +8,25 @@ router.get('/:username/:postid', (req, res) => {
   const username = req.params.username;
   const postid = req.params.postid;
 
-  var Posts = db.get().collection('Posts');
+  const Posts = db.get().collection('Posts');
   Posts.findOne({ 'username': username, 'postid': parseInt(postid) }).then(post => {
 		// TODO: convert Markdown body to HTML
-		res.render('post', { post: post });
+
+		const reader = new commonmark.Parser();
+		const writer = new commonmark.HtmlRenderer();
+
+		const parsedTitle = reader.parse(post.title);
+		const convertedTitle = writer.render(parsedTitle);
+
+		const parsedBody = reader.parse(post.body);
+		const convertedBody = writer.render(parsedBody);
+
+		res.render('post', {
+			htmlTitle: post.title,
+			title: convertedTitle,
+			username: post.username,
+			body: convertedBody
+		});
 	}).catch((err) => {
 		console.log("Error: " + err.message);
 	});

@@ -1,7 +1,7 @@
 var db = require('../utils/db');
 
 const getPosts = (username, callback) => {
-	var Posts = db.get().collection('Posts');
+	const Posts = db.get().collection('Posts');
 	Posts.find({ 'username': username }).sort({ 'postid': 1 }).toArray().then(posts => {
 		callback(null, posts);
 	}).catch((err) => {
@@ -12,4 +12,4 @@ const getPosts = (username, callback) => {
 
 module.exports = {
 	getPosts: getPosts
-};]
+};

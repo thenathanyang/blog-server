@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><%= post.title %></title>
+	<title><%= htmlTitle %></title>
 </head>
 
 <body>
-	<h1><%= post.title %></h1>
-	<h3>Written by <%= post.username %></h3>
+	<%- title %>
+	<p>Written by <%= username %></p>
 
-	<p><%= post.body %></p>
+	<div id="postBody"><%- body %></div>
 </body>
 </html>

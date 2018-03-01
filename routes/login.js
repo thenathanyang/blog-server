@@ -5,7 +5,7 @@ var db = require('../utils/db');
 var auth = require('../utils/auth');
 
 router.get('/', (req, res) => {
-	var Users = db.get().collection('Users');
+	const Users = db.get().collection('Users');
 
 	const username = req.query.username;
 	const inputPwd = req.query.password;
