@@ -31,7 +31,7 @@ exports.set = (res, username) => new Promise((resolve, reject) => {
 
 exports.wipe = res => {
   res.clearCookie('jwt');
-}
+};
 
 exports.decode = req => new Promise((resolve, reject) => {
   jwt.verify(token, JWT_SECRET, { algorithms: ["HS256"] }, (payload, err) => {

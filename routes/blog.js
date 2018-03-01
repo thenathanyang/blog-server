@@ -2,10 +2,6 @@ var express = require('express');
 var router = express.Router();
 var db = require('../utils/db');
 
-router.get('/', (req, res) => {
-	res.send("Test!");
-});
-
 /* GET Post */
 router.get('/:username/:postid', (req, res) => {
   const username = req.params.username;
@@ -13,6 +9,7 @@ router.get('/:username/:postid', (req, res) => {
 
   var Posts = db.get().collection('Posts');
   Posts.findOne({ 'username': username, 'postid': parseInt(postid) }).then(post => {
+		// TODO: convert Markdown body to HTML
 		res.render('post', { post: post });
 	}).catch((err) => {
 		console.log("Error: " + err.message);
