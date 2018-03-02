@@ -10,7 +10,8 @@ router.get('/:username/:postid', (req, res) => {
 
   const Posts = db.get().collection('Posts');
   Posts.findOne({ 'username': username, 'postid': parseInt(postid) }).then(post => {
-		// TODO: convert Markdown body to HTML
+		if (post === null)
+			return res.render('post', { isFound: false });
 
 		const reader = new commonmark.Parser();
 		const writer = new commonmark.HtmlRenderer();
@@ -22,6 +23,7 @@ router.get('/:username/:postid', (req, res) => {
 		const convertedBody = writer.render(parsedBody);
 
 		res.render('post', {
+			isFound: true,
 			htmlTitle: post.title,
 			title: convertedTitle,
 			username: post.username,
@@ -43,6 +45,12 @@ router.get('/:username', (req, res) => {
 
 	Posts.find({ 'username': username, 'postid': {$gte:postidToRender} })
 				.sort({ 'postid': 1 }).limit(5).toArray().then(posts => {
+		if (posts.length === 0) {
+			console.log("No posts found");
+			return new Promise((resolve, reject) => {
+				resolve([]);
+			});
+		}
 
 		const reader = new commonmark.Parser();
 		const writer = new commonmark.HtmlRenderer();
@@ -55,8 +63,11 @@ router.get('/:username', (req, res) => {
 			const convertedBody = writer.render(parsedBody);
 
 			const postObj = {
-				title: convertedTitle,
+				postid: post.postid,
 				username: post.username,
+				created: post.created,
+				modified: post.modified,
+				title: convertedTitle,
 				body: convertedBody
 			};
 
@@ -66,7 +77,7 @@ router.get('/:username', (req, res) => {
 		return Posts.find({ 'username': username, 'postid': {$gt:postsList[postsList.length - 1].postid} })
 								.sort({ 'postid': 1 }).limit(1).toArray();
 	}).then(nextLargestPost => {
-		const isMoreToRender = (nextLargestPost[0]) ? true : false;
+		const isMoreToRender = (nextLargestPost.length > 0 && nextLargestPost[0]) ? true : false;
 		let nextURL = "";
 		if (isMoreToRender) {
 			const nextStart = nextLargestPost[0].postid;

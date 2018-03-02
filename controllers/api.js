@@ -45,19 +45,34 @@ const getPost = (username, postid, callback) => {
 	});
 }
 
-const insertPost = (username, postid, post) => {
+const insertPost = (username, postid, newPost, callback) => {
 	const Posts = db.get().collection('Posts');
 
-	if (post.title === null || post.body === null) {
-		callback(Error("post must have a title and body"), null);
+	console.log(newPost);
+	console.log(newPost.title);
+	if (newPost.title === null
+			|| newPost.body === null
+			|| newPost.title === undefined
+			|| newPost.body === undefined) {
+		return callback(Error("post must have a title and body"), null);
 	}
 
-	Posts.findOne({ 'username': username, 'postid': parseInt(postid) }).then(post => {
-		if (post !== null)
+	Posts.findOne({ 'username': username, 'postid': parseInt(postid) }).then(foundPost => {
+		if (foundPost !== null)
 			throw new Error("post already exists");
 
-		// Insert new post
+		const postObject = {
+			postid: parseInt(postid),
+			username: username,
+			created: (new Date).getTime(),
+			modified: (new Date).getTime(),
+			title: newPost.title,
+			body: newPost.body
+		};
 
+		return Posts.insertOne(postObject);
+	}).then(result => {
+		callback(null, result);
 	}).catch(err => {
 		console.log("Error: " + err.message);
 		callback(err, null);

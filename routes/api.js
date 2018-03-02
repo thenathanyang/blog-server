@@ -57,7 +57,7 @@ router.post('/:username/:postid', (req, res) => {
 	const postid = req.params.postid;
 	const jsonRequest = req.body;
 
-	apController.insertPost(username, postid, jsonRequest, (err, data) => {
+	apiController.insertPost(username, postid, jsonRequest, (err, data) => {
 		if (err)
 			return resp.badRequest(req, res, err);	// 400
 

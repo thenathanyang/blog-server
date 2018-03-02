@@ -5,9 +5,11 @@
 </head>
 
 <body>
-	<%- title %>
-	<p>Written by <%= username %></p>
+	<% if (isFound) { %>
+		<%- title %>
+		<p>Written by <%= username %></p>
 
-	<%- body %>
+		<%- body %>
+	<% } %>
 </body>
 </html>
