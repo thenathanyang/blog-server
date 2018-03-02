@@ -42,10 +42,30 @@ const getPost = (username, postid, callback) => {
 	}).catch(err => {
 		console.log("Error: " + err.message);
 		callback(err, null);
-	})
+	});
 }
+
+const insertPost = (username, postid, post) => {
+	const Posts = db.get().collection('Posts');
+
+	if (post.title === null || post.body === null) {
+		callback(Error("post must have a title and body"), null);
+	}
+
+	Posts.findOne({ 'username': username, 'postid': parseInt(postid) }).then(post => {
+		if (post !== null)
+			throw new Error("post already exists");
+
+		// Insert new post
+
+	}).catch(err => {
+		console.log("Error: " + err.message);
+		callback(err, null);
+	});
+};
 
 module.exports = {
 	getPosts: getPosts,
-	getPost: getPost
+	getPost: getPost,
+	insertPost: insertPost
 };

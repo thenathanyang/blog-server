@@ -1,5 +1,13 @@
+exports.ok = (req, res, data) => {
+	res.status(200).json(data);
+};
+
+exports.created = (req, res) => {
+	res.status(201).end();
+};
+
 exports.noContent = (req, res) => {
-	res.status(204).json({});
+	res.status(204).end();
 };
 
 exports.badRequest = (req, res, err) => {
