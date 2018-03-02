@@ -8,10 +8,10 @@
 <body>
 	<% for (let i = 0; i < postsList.length; i++) { %>
 		<div>
-			<h1><%= postsList[i].title %></h1>
-			<h3>Written by <%= postsList[i].username %></h3>
+			<%- postsList[i].title %>
+			<p>Written by <%= postsList[i].username %></p>
 
-			<p><%= postsList[i].body %></p>
+			<%- postsList[i].body %>
 		</div>
 	<% } %>
 

@@ -43,7 +43,26 @@ router.get('/:username', (req, res) => {
 
 	Posts.find({ 'username': username, 'postid': {$gte:postidToRender} })
 				.sort({ 'postid': 1 }).limit(5).toArray().then(posts => {
-		postsList = posts;
+
+		const reader = new commonmark.Parser();
+		const writer = new commonmark.HtmlRenderer();
+
+		posts.forEach(post => {
+			const parsedTitle = reader.parse(post.title);
+			const convertedTitle = writer.render(parsedTitle);
+
+			const parsedBody = reader.parse(post.body);
+			const convertedBody = writer.render(parsedBody);
+
+			const postObj = {
+				title: convertedTitle,
+				username: post.username,
+				body: convertedBody
+			};
+
+			postsList.push(postObj);
+		});
+
 		return Posts.find({ 'username': username, 'postid': {$gt:postsList[postsList.length - 1].postid} })
 								.sort({ 'postid': 1 }).limit(1).toArray();
 	}).then(nextLargestPost => {
