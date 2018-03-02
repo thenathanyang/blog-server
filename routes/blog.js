@@ -27,14 +27,14 @@ router.get('/:username/:postid', (req, res) => {
 			username: post.username,
 			body: convertedBody
 		});
-	}).catch((err) => {
+	}).catch(err => {
 		console.log("Error: " + err.message);
 	});
 });
 
 /* GET Posts List */
 router.get('/:username', (req, res) => {
-	var Posts = db.get().collection('Posts');
+	const Posts = db.get().collection('Posts');
 	const username = req.params.username;
 	let postsList = [];
 
@@ -59,7 +59,7 @@ router.get('/:username', (req, res) => {
 			isMoreToRender: isMoreToRender,
 			nextURL: nextURL
 		});
-	}).catch((err) => {
+	}).catch(err => {
 		console.log("Error: " + err.message);
 	});
 });

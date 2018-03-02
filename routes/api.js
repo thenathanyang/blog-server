@@ -10,12 +10,23 @@ router.get('/:username', (req, res) => {
 	const username = req.params.username;
 
 	apiController.getPosts(username, (err, data) => {
-		if (err || data === null)
+		if (err)
 			return resp.badRequest(req, res, err);
 
-		// TODO: escape backslash \ from data
-		const jsonResponse = JSON.stringify(data);
-		res.status(200).json(jsonResponse);
+		res.status(200).json(data);
+	});
+});
+
+/* GET Post */
+router.get('/:username/:postid', (req, res) => {
+	const username = req.params.username;
+	const postid = req.params.postid;
+
+	apiController.getPost(username, postid, (err, data) => {
+		if (err)
+			return resp.notFound(req, res, err);
+
+		res.status(200).json(data);
 	});
 });
 
