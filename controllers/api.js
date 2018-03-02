@@ -48,12 +48,10 @@ const getPost = (username, postid, callback) => {
 const insertPost = (username, postid, newPost, callback) => {
 	const Posts = db.get().collection('Posts');
 
-	console.log(newPost);
-	console.log(newPost.title);
 	if (newPost.title === null
 			|| newPost.body === null
-			|| newPost.title === undefined
-			|| newPost.body === undefined) {
+			|| typeof newPost.title === "undefined"
+			|| typeof newPost.body === "undefined") {
 		return callback(Error("post must have a title and body"), null);
 	}
 
@@ -64,8 +62,8 @@ const insertPost = (username, postid, newPost, callback) => {
 		const postObject = {
 			postid: parseInt(postid),
 			username: username,
-			created: (new Date).getTime(),
-			modified: (new Date).getTime(),
+			created: Date.now(),
+			modified: Date.now(),
 			title: newPost.title,
 			body: newPost.body
 		};

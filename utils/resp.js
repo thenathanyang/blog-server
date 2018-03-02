@@ -20,7 +20,7 @@ exports.badRequest = (req, res, err) => {
 };
 
 exports.unauthorized = (req, res, msg) => {
-	const errorMessage = (msg && typeof msg === "string" && msg.length > 0) ? msg : "Request lacks valid credentials";
+	const errorMessage = (msg && typeof msg === "string" && msg.length > 0) ? msg : "request lacks valid credentials";
 	res.set("Content-Type", "application/json; charset=utf-8");
 	res.status(401).json({
 		code: 401,
@@ -41,7 +41,7 @@ exports.notFound = (req, res, err, msg) => {
 
 
 exports.serverError = (req, res, err, msg) => {
-	const errorMessage = (msg && typeof msg === "string" && msg.length > 0) ? msg : "An unexpected error occurred";
+	const errorMessage = (msg && typeof msg === "string" && msg.length > 0) ? msg : "an unexpected error occurred";
 	res.set("Content-Type", "application/json; charset=utf-8");
 	res.status(500).json({
 		code: 500,
