@@ -19,8 +19,8 @@ router.get('/', (req, res) => {
 	}).then(result => {
 		if (result === false)
 			throw new Error("username/password does not match");
-
-		return auth.set(res, username);
+		// auth.wipe(res);
+		return auth.setCookie(res, username);
 	}).then(() => {
 		console.log("Successful login by: " + username);
 		res.redirect(redirect);
