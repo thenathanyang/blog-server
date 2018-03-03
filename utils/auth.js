@@ -4,14 +4,14 @@ var resp = require('./resp');
 const JWT_EXPIRATION = 2 * 60 * 60;  // 2 hours in seconds
 const JWT_SECRET = 'C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c';
 const JWT_HEADER = {
-	alg: "HS256",
-	typ: "JWT"
+	"alg": "HS256",
+	"typ": "JWT"
 };
 
 const encode = (username, callback) => {
 	const payload = {
-		exp: (Date.now()/1000) + JWT_EXPIRATION,
-		usr: username
+		"exp": (Date.now()/1000) + JWT_EXPIRATION,
+		"usr": username
 	};
 
 	jwt.sign(payload, JWT_SECRET, { algorithm: 'HS256', header: JWT_HEADER, }, (err, token) => {
