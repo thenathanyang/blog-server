@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../utils/db');
 var resp = require('../utils/resp');
 var auth = require('../utils/auth');
 
