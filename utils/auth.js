@@ -35,7 +35,13 @@ const wipe = res => {
 	res.clearCookie('jwt');
 };
 
-const decodeCookie = (token, callback) => {
+// Synchronous
+const decodeCookie = token => {
+	return jwt.verify(token, JWT_SECRET, { algorithms: ["HS256"] });
+};
+
+// Asynchronous
+const decodeCookieCallback = (token, callback) => {
 	jwt.verify(token, JWT_SECRET, { algorithms: ["HS256"] }, (err, payload) => {
 		if (err) {
 			callback(err, null);
@@ -44,13 +50,24 @@ const decodeCookie = (token, callback) => {
 	});
 };
 
-const decode = req => new Promise((resolve, reject) => {
+// Synchronous
+const decode = req => {
+	if (req.cookies === null || typeof req.cookies === "undefined")
+		throw new Error("req does not have a cookies object");
+	if (req.cookies.jwt === null || typeof req.cookies.jwt === "undefined")
+		throw new Error("request does not have authentication");
+
+	return decodeCookie(req.cookies.jwt);
+};
+
+// Asynchronous
+const decodePromise = req => new Promise((resolve, reject) => {
 	if (req.cookies === null || typeof req.cookies === "undefined")
 		return reject(Error("req does not have a cookies object"));
 	if (req.cookies.jwt === null || typeof req.cookies.jwt === "undefined")
 		return reject(Error("request does not have authentication"));
 
-	decodeCookie(req.cookies.jwt, (err, payload) => {
+	decodeCookieCallback(req.cookies.jwt, (err, payload) => {
 		if (err) {
 			reject(err);
 		}
@@ -58,7 +75,14 @@ const decode = req => new Promise((resolve, reject) => {
 	});
 });
 
-const getUsername = req => new Promise((resolve, reject) => {
+// Synchronous
+const getUsername = req => {
+	const payload = decode(req);
+	return payload.usr;
+};
+
+// Asynchronous
+const getUsernamePromise = req => new Promise((resolve, reject) => {
 	decode(req).then(payload => {
 		resolve(payload.usr);
 	}).catch(err => {
@@ -71,5 +95,7 @@ module.exports = {
 	setCookie: setCookie,
 	wipe: wipe,
 	decode: decode,
-	getUsername: getUsername
+	decodePromise: decodePromise,
+	getUsername: getUsername,
+	getUsernamePromise: getUsernamePromise
 };
