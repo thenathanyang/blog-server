@@ -1,4 +1,5 @@
 var jwt = require("jsonwebtoken");
+var resp = require('./resp');
 
 const JWT_EXPIRATION = 2 * 60 * 60;  // 2 hours in seconds
 const JWT_SECRET = 'C-UFRaksvPKhx1txJYFcut3QGxsafPmwCY6SCly3G6c';
@@ -90,6 +91,18 @@ const getUsernamePromise = req => new Promise((resolve, reject) => {
 	});
 });
 
+const validateAuth = (req, res, next) => {
+	try {
+		const authUsername = getUsername(req);
+		if (username !== autUsername) {
+			throw new Error("username does not match authorized username");
+		}
+		next();
+	} catch (err) {
+		return resp.unauthorized(req, res, err.message);	// 401
+	}
+}
+
 module.exports = {
 	encode: encode,
 	setCookie: setCookie,
@@ -97,5 +110,6 @@ module.exports = {
 	decode: decode,
 	decodePromise: decodePromise,
 	getUsername: getUsername,
-	getUsernamePromise: getUsernamePromise
+	getUsernamePromise: getUsernamePromise,
+	validateAuth: validateAuth
 };
