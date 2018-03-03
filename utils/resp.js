@@ -1,5 +1,8 @@
 exports.ok = (req, res, data) => {
-	res.status(200).json(data);
+	if (data) {
+		return res.status(200).json(data);
+	}
+	res.status(200).end();
 };
 
 exports.created = (req, res) => {

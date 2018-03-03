@@ -17,9 +17,9 @@ router.get('/:username', (req, res) => {
 	const username = req.params.username;
 
 	apiController.getPosts(username, (err, data) => {
-		if (err)
+		if (err) {
 			return resp.badRequest(req, res, err);	// 400
-
+		}
 		resp.ok(req, res, data);	// 200
 	});
 });
@@ -54,9 +54,9 @@ router.get('/:username/:postid', (req, res) => {
 
 
 	apiController.getPost(username, postid, (err, data) => {
-		if (err)
+		if (err) {
 			return resp.notFound(req, res, err);	// 400
-
+		}
 		resp.ok(req, res, data);	// 200
 	});
 });
@@ -77,10 +77,32 @@ router.post('/:username/:postid', (req, res) => {
 	const jsonRequest = req.body;
 
 	apiController.insertPost(username, postid, jsonRequest, (err, data) => {
-		if (err)
+		if (err) {
 			return resp.badRequest(req, res, err);	// 400
-
+		}
 		resp.created(req, res);	// 201
+	});
+});
+
+/* PUT /api/:username/:postid
+ * The request must include title and body in its body in JSON. When the server
+ * gets this request, it must update the existing blog post with postid by
+ * username with the title and body values from the request. The modified field
+ * should be updated to the current time as well. If the update is successful,
+ * the server should reply with "200 (OK)" status code. If there is no blog post
+ * with postid by username, the server should reply with "400 (Bad request)"
+ * status code.
+ */
+router.put('/:username/:postid', (req, res) => {
+	const username = req.params.username;
+	const postid = req.params.postid;
+	const jsonRequest = req.body;
+
+	apiController.updatePost(username, postid, jsonRequest, (err, data) => {
+		if (err) {
+			return resp.badRequest(req, res, err);	// 400
+		}
+		resp.ok(req, res);	// 200
 	});
 });
 

@@ -24,7 +24,7 @@ router.get('/:username/:postid', (req, res) => {
 
 		res.render('post', {
 			isFound: true,
-			htmlTitle: post.title,
+			htmlTitle: post ? post.title : "",
 			title: convertedTitle,
 			username: post.username,
 			body: convertedBody

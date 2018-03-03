@@ -77,8 +77,37 @@ const insertPost = (username, postid, newPost, callback) => {
 	});
 };
 
+const updatePost = (username, postid, updatedPost, callback) => {
+	const Posts = db.get().collection('Posts');
+
+	if (updatedPost.title === null
+			|| updatedPost.body === null
+			|| typeof updatedPost.title === "undefined"
+			|| typeof updatedPost.body === "undefined") {
+		return callback(Error("post must have a title and body"), null);
+	}
+
+	const updateObj = {
+		$set: {
+			modified: Date.now(),
+			title: updatedPost.title,
+			body: updatedPost.body
+		}
+	};
+
+	Posts.updateOne({ 'username': username, 'postid': parseInt(postid) }, updateObj).then(result => {
+		if (result.result.ok !== 1)
+			throw new Error("failed to update post");
+		callback(null, result);
+	}).catch(err => {
+		console.log("Error: " + err.message);
+		callback(err, null);
+	});
+};
+
 module.exports = {
 	getPosts: getPosts,
 	getPost: getPost,
-	insertPost: insertPost
+	insertPost: insertPost,
+	updatePost: updatePost
 };
