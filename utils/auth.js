@@ -91,18 +91,6 @@ const getUsernamePromise = req => new Promise((resolve, reject) => {
 	});
 });
 
-const validateAuth = (req, res, next) => {
-	try {
-		const authUsername = getUsername(req);
-		if (username !== autUsername) {
-			throw new Error("username does not match authorized username");
-		}
-		next();
-	} catch (err) {
-		return resp.unauthorized(req, res, err.message);	// 401
-	}
-}
-
 module.exports = {
 	encode: encode,
 	setCookie: setCookie,
@@ -110,6 +98,5 @@ module.exports = {
 	decode: decode,
 	decodePromise: decodePromise,
 	getUsername: getUsername,
-	getUsernamePromise: getUsernamePromise,
-	validateAuth: validateAuth
+	getUsernamePromise: getUsernamePromise
 };

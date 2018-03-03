@@ -17,6 +17,14 @@ const apiController = require("../controllers/api.js");
 router.get('/:username', (req, res) => {
 	const username = req.params.username;
 
+	try {
+		const authUsername = auth.getUsername(req);
+		if (username !== authUsername)
+			throw new Error("username does not match authorized username");
+	} catch (err) {
+		return resp.unauthorized(req, res, err.message);	// 401
+	}
+
 	apiController.getPosts(username, (err, data) => {
 		if (err) {
 			return resp.badRequest(req, res, err);	// 400
@@ -36,6 +44,14 @@ router.get('/:username', (req, res) => {
 router.get('/:username/:postid', (req, res) => {
 	const username = req.params.username;
 	const postid = req.params.postid;
+
+	try {
+		const authUsername = auth.getUsername(req);
+		if (username !== authUsername)
+			throw new Error("username does not match authorized username");
+	} catch (err) {
+		return resp.unauthorized(req, res, err.message);	// 401
+	}
 
 	apiController.getPost(username, postid, (err, data) => {
 		if (err) {
@@ -61,6 +77,14 @@ router.post('/:username/:postid', (req, res) => {
 	const postid = req.params.postid;
 	const jsonRequest = req.body;
 
+	try {
+		const authUsername = auth.getUsername(req);
+		if (username !== authUsername)
+			throw new Error("username does not match authorized username");
+	} catch (err) {
+		return resp.unauthorized(req, res, err.message);	// 401
+	}
+
 	apiController.insertPost(username, postid, jsonRequest, (err, data) => {
 		if (err) {
 			return resp.badRequest(req, res, err);	// 400
@@ -84,6 +108,14 @@ router.put('/:username/:postid', (req, res) => {
 	const postid = req.params.postid;
 	const jsonRequest = req.body;
 
+	try {
+		const authUsername = auth.getUsername(req);
+		if (username !== authUsername)
+			throw new Error("username does not match authorized username");
+	} catch (err) {
+		return resp.unauthorized(req, res, err.message);	// 401
+	}
+
 	apiController.updatePost(username, postid, jsonRequest, (err, data) => {
 		if (err) {
 			return resp.badRequest(req, res, err);	// 400
@@ -103,6 +135,14 @@ router.put('/:username/:postid', (req, res) => {
 router.delete('/:username/:postid', (req, res) => {
 	const username = req.params.username;
 	const postid = req.params.postid;
+
+	try {
+		const authUsername = auth.getUsername(req);
+		if (username !== authUsername)
+			throw new Error("username does not match authorized username");
+	} catch (err) {
+		return resp.unauthorized(req, res, err.message);	// 401
+	}
 
 	apiController.deletePost(username, postid, (err, data) => {
 		if (err) {
