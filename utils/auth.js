@@ -9,7 +9,7 @@ const JWT_HEADER = {
 
 const encode = (username, callback) => {
 	const payload = {
-		exp: JWT_EXPIRATION,
+		exp: (Date.now()/1000) + JWT_EXPIRATION,
 		usr: username
 	};
 
@@ -35,21 +35,34 @@ const wipe = res => {
 	res.clearCookie('jwt');
 };
 
-const decode = req => new Promise((resolve, reject) => {
-	jwt.verify(token, JWT_SECRET, { algorithms: ["HS256"] }, (payload, err) => {
+const decodeCookie = (token, callback) => {
+	jwt.verify(token, JWT_SECRET, { algorithms: ["HS256"] }, (err, payload) => {
 		if (err) {
-			return reject (err);
+			callback(err, null);
+		}
+		callback(null, payload);
+	});
+};
+
+const decode = req => new Promise((resolve, reject) => {
+	if (req.cookies === null || typeof req.cookies === "undefined")
+		return reject(Error("req does not have a cookies object"));
+	if (req.cookies.jwt === null || typeof req.cookies.jwt === "undefined")
+		return reject(Error("request does not have authentication"));
+
+	decodeCookie(req.cookies.jwt, (err, payload) => {
+		if (err) {
+			reject(err);
 		}
 		resolve(payload);
 	});
 });
 
 const getUsername = req => new Promise((resolve, reject) => {
-	jwt.verify(token, JWT_SECRET, { algorithms: ["HS256"] }, (payload, err) => {
-		if (err) {
-			return reject(err)
-		}
-		resolve(payload.username)
+	decode(req).then(payload => {
+		resolve(payload.usr);
+	}).catch(err => {
+		reject(err);
 	});
 });
 

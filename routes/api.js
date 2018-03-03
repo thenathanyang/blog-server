@@ -34,22 +34,24 @@ router.get('/:username', (req, res) => {
 router.get('/:username/:postid', (req, res) => {
 	const username = req.params.username;
 	const postid = req.params.postid;
-	// console.log(req.cookies);
-	// console.log(req.cookies.jwt);
 
 	// auth.getUsername(req).then(authUsername => {
-	// 	if (username !== authUsername)
+	// 	if (username !== authUsername) {
+	// 		console.log(authUsername);
+	// 		console.log(username);
 	// 		throw new Error("username does not match authorized username");
+	// 	}
+
+	// 	apiController.getPost(username, postid, (err, data) => {
+	// 		if (err)
+	// 			return resp.notFound(req, res, err);	// 400
+
+	// 		resp.ok(req, res, data);	// 200
+	// 	});
 	// }).catch(err => {
 	// 	return resp.unauthorized(req, res, err.message);	// 401
 	// });
 
-	// auth.decode(req).then(payload => {
-	// 	if (username !== payload.username)
-	// 		throw new Error("username does not match authorized username");
-	// }).catch(err => {
-	// 	return resp.unauthorized(req, res, err.message);	// 401
-	// });
 
 	apiController.getPost(username, postid, (err, data) => {
 		if (err)
