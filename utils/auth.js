@@ -32,7 +32,7 @@ const setCookie = (res, username) => new Promise((resolve, reject) => {
 	});
 });
 
-const wipe = res => {
+const clear = res => {
 	res.clearCookie('jwt');
 };
 
@@ -94,7 +94,7 @@ const getUsernamePromise = req => new Promise((resolve, reject) => {
 module.exports = {
 	encode: encode,
 	setCookie: setCookie,
-	wipe: wipe,
+	clear: clear,
 	decode: decode,
 	decodePromise: decodePromise,
 	getUsername: getUsername,
