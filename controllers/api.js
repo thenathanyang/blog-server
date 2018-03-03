@@ -105,9 +105,23 @@ const updatePost = (username, postid, updatedPost, callback) => {
 	});
 };
 
+const deletePost = (username, postid, callback) => {
+	const Posts = db.get().collection('Posts');
+
+	Posts.deleteOne({ 'username': username, 'postid': parseInt(postid) }).then(result => {
+		if (result.result.n !== 1)
+			throw new Error("failed to delete post");
+		callback(null, result);
+	}).catch(err => {
+		console.log("Error: " + err.message);
+		callback(err, null);
+	});
+};
+
 module.exports = {
 	getPosts: getPosts,
 	getPost: getPost,
 	insertPost: insertPost,
-	updatePost: updatePost
+	updatePost: updatePost,
+	deletePost: deletePost
 };
