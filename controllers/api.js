@@ -96,7 +96,7 @@ const updatePost = (username, postid, updatedPost, callback) => {
 	};
 
 	Posts.updateOne({ 'username': username, 'postid': parseInt(postid) }, updateObj).then(result => {
-		if (result.result.ok !== 1)
+		if (result.result.nModified !== 1)
 			throw new Error("failed to update post");
 		callback(null, result);
 	}).catch(err => {
