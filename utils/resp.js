@@ -42,7 +42,6 @@ exports.notFound = (req, res, err, msg) => {
 	});
 };
 
-
 exports.serverError = (req, res, err, msg) => {
 	const errorMessage = (msg && typeof msg === "string" && msg.length > 0) ? msg : "an unexpected error occurred";
 	res.set("Content-Type", "application/json; charset=utf-8");
