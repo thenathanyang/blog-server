@@ -2,13 +2,13 @@
 <html>
 <head>
 	<title>Login</title>
-	<!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
 	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="/stylesheets/login.css">
 	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
 </head>
 <body>
-	<form method="get" action="/login">
-	<div class="form-group">
+	<form class="form-login" method="get" action="/login">
+		<div class="form-group">
 			<label>Username</label>
 			<input type="text" class="form-control" name="username" placeholder="Username">
 		</div>
@@ -20,7 +20,7 @@
 
 		<input type="hidden" name="redirect" value="<%= redirect %>">
 
-		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="submit" class="btn btn-primary btn-block">Submit</button>
 	</form>
 </body>
 </html>

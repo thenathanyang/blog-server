@@ -4,12 +4,13 @@
 	<% if (isFound) { %>
 		<title><%= htmlTitle %></title>
 	<% } %>
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
 </head>
 
 <body>
 	<% if (isFound) { %>
-		<%- title %>
-		<p>Written by <%= username %></p>
+		<h1><%- title %></h1>
 
 		<%- body %>
 	<% } %>

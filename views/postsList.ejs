@@ -3,20 +3,27 @@
 <html>
 <head>
 	<title>Blog Posts</title>
+
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<link rel="stylesheet" href="/stylesheets/postsList.css">
+	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
 </head>
 
 <body>
 	<% for (let i = 0; i < postsList.length; i++) { %>
 		<div>
-			<%- postsList[i].title %>
-			<p>Written by <%= postsList[i].username %></p>
+			<h1><%- postsList[i].title %></h1>
 
 			<%- postsList[i].body %>
+
+			<% if (i != postsList.length - 1) { %><hr><% } %>
 		</div>
 	<% } %>
 
 	<% if (isMoreToRender) { %>
-		<a id="next" href=<%= nextURL %>>Next</a>
+		<div id="nextBtn" class="text-center">
+			<a href="<%= nextURL %>" id="next" class="btn btn-primary btn-block" role="button">Next</a>
+		</div>
 	<% } %>
 </body>
 </html>
