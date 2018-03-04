@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 
 var db = require('./utils/db');
 db.connect('mongodb://localhost:27017', 'BlogServer', err => {
-  if (err) throw err;
-  console.log("Connected to MongoDB");
+	if (err) throw err;
+	console.log("Connected to MongoDB");
 });
 
 var index = require('./routes/index');
@@ -16,7 +16,9 @@ var users = require('./routes/users');
 var blog = require('./routes/blog');
 var login = require('./routes/login');
 var api = require('./routes/api');
-var edit = require('./routes/edit');
+
+var auth = require('./utils/auth');
+// var edit = require('./public/edit');
 
 var app = express();
 
@@ -30,31 +32,37 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/blog', blog);
 app.use('/login', login);
 app.use('/api', api);
-app.use('/edit', edit);
+
+app.use('/stylesheets', express.static(path.join(__dirname, 'public/stylesheets')));
+// app.use('/edit', res, express.static(path.join(__dirname, 'public/edit')));
+
+
+// app.use('/edit', authFn, express.static(...))
+app.use('/edit', auth.validateAuth, express.static(path.join(__dirname, 'public/edit')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+	// set locals, only providing error in development
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+	// render the error page
+	res.status(err.status || 500);
+	res.render('error');
 });
 
 module.exports = app;
