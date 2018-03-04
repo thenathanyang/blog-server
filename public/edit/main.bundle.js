@@ -222,7 +222,7 @@ var BlogService = /** @class */ (function () {
         this.http = http;
         this.router = router;
         this.posts = [];
-        this.apiURL = 'http://localhost:3000/api/';
+        this.apiURL = 'http://localhost:3000/api';
         this.fetchPosts();
     }
     BlogService.prototype.decodeUsername = function () {
@@ -253,7 +253,7 @@ var BlogService = /** @class */ (function () {
         var username = this.decodeUsername();
         if (username == "")
             return;
-        var usernameURL = this.apiURL + username;
+        var usernameURL = this.apiURL + "/" + username;
         this.fetchPostsFromAPI(usernameURL).then(function (result) {
             var numOfPosts = Object.keys(result).length;
             for (var i = 0; i < numOfPosts; i++) {
@@ -322,7 +322,7 @@ var BlogService = /** @class */ (function () {
         var newTitle = "";
         var newBody = "";
         var username = this.decodeUsername();
-        var newPostURL = this.apiURL + username + newPostID;
+        var newPostURL = this.apiURL + "/" + username + "/" + newPostID;
         this.saveNewPost(newPostURL, newTitle, newBody)
             .then(function (code) {
             console.log("Fulfilled properly with code: " + code);
@@ -373,7 +373,7 @@ var BlogService = /** @class */ (function () {
         var _this = this;
         var numOfPosts = this.posts.length;
         var username = this.decodeUsername();
-        var newPutURL = this.apiURL + username + post.postid;
+        var newPutURL = this.apiURL + "/" + username + "/" + post.postid;
         var _loop_1 = function (i) {
             if (this_1.posts[i].postid === post.postid) {
                 this_1.saveUpdatePost(newPutURL, post.title, post.title)
@@ -425,7 +425,11 @@ var BlogService = /** @class */ (function () {
         var _this = this;
         var numOfPosts = this.posts.length;
         var username = this.decodeUsername();
-        var newDeleteURL = this.apiURL + username + id;
+        var newDeleteURL = this.apiURL + "/" + username + "/" + id;
+        console.log(this.apiURL);
+        console.log(username);
+        console.log(id);
+        console.log("Deleting at: " + newDeleteURL);
         for (var i = 0; i < numOfPosts; i++) {
             if (this.posts[i].postid === id) {
                 // delete from this.posts
