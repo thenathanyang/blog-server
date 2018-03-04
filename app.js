@@ -48,7 +48,8 @@ app.use('/stylesheets', express.static(path.join(__dirname, 'public/stylesheets'
 app.use('/edit', authenticate, express.static(path.join(__dirname, 'public/edit')));
 
 function authenticate(req, res, next) {
-  console.log(req);
+  console.log("entered authenticate");
+  const username = req.query.username;
   const authUsername = auth.getUsername(req);
   if (username !== authUsername)
     res.redirect("/login?redirect=/edit/");
