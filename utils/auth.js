@@ -27,7 +27,7 @@ const setCookie = (res, username) => new Promise((resolve, reject) => {
 		if (err) {
 			reject(err);
 		}
-		res.cookie('jwt', token);
+		res.cookie('jwt', token, { httpOnly: false });
 		resolve();
 	});
 });
