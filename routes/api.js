@@ -21,7 +21,8 @@ router.get('/:username', (req, res) => {
 		if (username !== authUsername)
 			throw new Error("username does not match authorized username");
 	} catch (err) {
-		return resp.unauthorized(req, res, err.message);	// 401
+		//return resp.unauthorized(req, res, err.message);	// 401
+		return res.redirect("/login?redirect=/edit/");
 	}
 
 	apiController.getPosts(username, (err, data) => {
@@ -49,7 +50,8 @@ router.get('/:username/:postid', (req, res) => {
 		if (username !== authUsername)
 			throw new Error("username does not match authorized username");
 	} catch (err) {
-		return resp.unauthorized(req, res, err.message);	// 401
+		// return resp.unauthorized(req, res, err.message);	// 401
+		return res.redirect("/login?redirect=/edit/");
 	}
 
 	apiController.getPost(username, postid, (err, data) => {
@@ -81,7 +83,8 @@ router.post('/:username/:postid', (req, res) => {
 		if (username !== authUsername)
 			throw new Error("username does not match authorized username");
 	} catch (err) {
-		return resp.unauthorized(req, res, err.message);	// 401
+		// return resp.unauthorized(req, res, err.message);	// 401
+		return res.redirect("/login?redirect=/edit/");
 	}
 
 	apiController.insertPost(username, postid, jsonRequest, (err, data) => {
@@ -112,7 +115,8 @@ router.put('/:username/:postid', (req, res) => {
 		if (username !== authUsername)
 			throw new Error("username does not match authorized username");
 	} catch (err) {
-		return resp.unauthorized(req, res, err.message);	// 401
+		// return resp.unauthorized(req, res, err.message);	// 401
+		return res.redirect("/login?redirect=/edit/");
 	}
 
 	apiController.updatePost(username, postid, jsonRequest, (err, data) => {
@@ -140,7 +144,8 @@ router.delete('/:username/:postid', (req, res) => {
 		if (username !== authUsername)
 			throw new Error("username does not match authorized username");
 	} catch (err) {
-		return resp.unauthorized(req, res, err.message);	// 401
+		// return resp.unauthorized(req, res, err.message);	// 401
+		return res.redirect("/login?redirect=/edit/");
 	}
 
 	apiController.deletePost(username, postid, (err, data) => {
