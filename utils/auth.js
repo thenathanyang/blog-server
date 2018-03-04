@@ -53,8 +53,6 @@ const decodeCookieCallback = (token, callback) => {
 
 // Synchronous
 const decode = req => {
-	console.log("inside decode: " + req.cookies);
-
 	if (req.cookies === null || typeof req.cookies === "undefined")
 		throw new Error("req does not have a cookies object");
 	if (req.cookies.jwt === null || typeof req.cookies.jwt === "undefined")
@@ -93,6 +91,24 @@ const getUsernamePromise = req => new Promise((resolve, reject) => {
 	});
 });
 
+const validateAuth = (req, res, next) => {
+	// console.log("entered authenticate");
+	// const username = req.query.username;
+	// const authUsername = auth.getUsername(req);
+	// if (username !== authUsername)
+	// 	res.redirect("/login?redirect=/edit/");
+	// else 
+	// 	auth.setCookie(res, username);
+	// 	next();
+
+	try {
+		const payload = decode(req);
+		next();
+	} catch (err) {
+		res.redirect("/login?redirect=/edit/");
+	}
+}
+
 module.exports = {
 	encode: encode,
 	setCookie: setCookie,
@@ -100,5 +116,6 @@ module.exports = {
 	decode: decode,
 	decodePromise: decodePromise,
 	getUsername: getUsername,
-	getUsernamePromise: getUsernamePromise
+	getUsernamePromise: getUsernamePromise,
+	validateAuth: validateAuth
 };

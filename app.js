@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 
 var db = require('./utils/db');
 db.connect('mongodb://localhost:27017', 'BlogServer', err => {
-  if (err) throw err;
-  console.log("Connected to MongoDB");
+	if (err) throw err;
+	console.log("Connected to MongoDB");
 });
 
 var index = require('./routes/index');
@@ -45,35 +45,24 @@ app.use('/stylesheets', express.static(path.join(__dirname, 'public/stylesheets'
 
 
 // app.use('/edit', authFn, express.static(...))
-app.use('/edit', authenticate, express.static(path.join(__dirname, 'public/edit')));
-
-function authenticate(req, res, next) {
-  console.log("entered authenticate");
-  const username = req.query.username;
-  const authUsername = auth.getUsername(req);
-  if (username !== authUsername)
-    res.redirect("/login?redirect=/edit/");
-  else 
-    auth.setCookie(res, username);
-    next();
-}
+app.use('/edit', auth.validateAuth, express.static(path.join(__dirname, 'public/edit')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+	// set locals, only providing error in development
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+	// render the error page
+	res.status(err.status || 500);
+	res.render('error');
 });
 
 module.exports = app;
