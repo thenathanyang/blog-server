@@ -26,7 +26,11 @@ router.get('/', (req, res) => {
 		return auth.setCookie(res, username);
 	}).then(() => {
 		console.log("Successful login by: " + username);
-		res.redirect(redirect);
+		if (redirect && typeof redirect !== "undefined" && redirect !== null) {
+			res.redirect(redirect);
+		} else {
+			res.send("Login successful but no redirect URL specified");
+		}
 	}).catch(err => {
 		res.render('login', { redirect: redirect });
 		console.log("Error: " + err.message);
