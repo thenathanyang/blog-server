@@ -13,6 +13,8 @@
 		<h1><%- title %></h1>
 
 		<%- body %>
+	<% } else { %>
+		<p>Could not find a blog post with the specified username and postid. Please provide a request for a valid existing post.</p>
 	<% } %>
 </body>
 </html>

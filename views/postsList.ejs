@@ -10,6 +10,10 @@
 </head>
 
 <body>
+	<% if (postsList.length === 0) { %>
+		<p>Could not find blog posts written by the specified username. Please provide a request for a valid existing user.</p>
+	<% } %>
+
 	<% for (let i = 0; i < postsList.length; i++) { %>
 		<div>
 			<h1><%- postsList[i].title %></h1>
