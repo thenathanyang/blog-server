@@ -53,6 +53,8 @@ const decodeCookieCallback = (token, callback) => {
 
 // Synchronous
 const decode = req => {
+	console.log("inside decode: " + req.cookies);
+
 	if (req.cookies === null || typeof req.cookies === "undefined")
 		throw new Error("req does not have a cookies object");
 	if (req.cookies.jwt === null || typeof req.cookies.jwt === "undefined")
