@@ -376,7 +376,7 @@ var BlogService = /** @class */ (function () {
         var newPutURL = this.apiURL + "/" + username + "/" + post.postid;
         var _loop_1 = function (i) {
             if (this_1.posts[i].postid === post.postid) {
-                this_1.saveUpdatePost(newPutURL, post.title, post.title)
+                this_1.saveUpdatePost(newPutURL, post.title, post.body)
                     .then(function (code) {
                     // update this.posts
                     _this.posts[i].modified = new Date(Date.now());
