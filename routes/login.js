@@ -5,14 +5,11 @@ var db = require('../utils/db');
 var auth = require('../utils/auth');
 
 router.get('/', (req, res) => {
-	console.log("Got a new login request");
 	const Users = db.get().collection('Users');
 
 	const username = req.query.username;
 	const inputPwd = req.query.password;
 	const redirect = req.query.redirect;
-	console.log("username: " + username);
-	console.log("inputPwd: " + inputPwd);
 
 	Users.findOne({ 'username': username }).then(user => {
 		if (user === null)
@@ -22,10 +19,9 @@ router.get('/', (req, res) => {
 	}).then(result => {
 		if (result === false)
 			throw new Error("username/password does not match2");
-		// auth.clear(res);
 		return auth.setCookie(res, username);
 	}).then(() => {
-		console.log("Successful login by: " + username);
+		// console.log("Successful login by: " + username);
 		if (redirect && typeof redirect !== "undefined" && redirect !== null) {
 			res.redirect(redirect);
 		} else {
